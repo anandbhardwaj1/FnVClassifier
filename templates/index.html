@@ -127,6 +127,7 @@
         </div>
 
         <div id="responseText"></div>
+<!--        <div id="result"></div>-->
     </div>
 
     <script>
@@ -169,9 +170,10 @@
             })
             .then(response => response.json())
             .then(data => {
+                //displayResponse(data);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('responseText').style.display = 'block';
-                document.getElementById('responseText').innerText = data.analysis;
+                displayResponse(data);
             })
             .catch(error => {
                 document.getElementById('loading').style.display = 'none';
@@ -179,6 +181,25 @@
                 document.getElementById('responseText').innerText = 'Error analyzing image.';
                 console.error('Error:', error);
             });
+        }
+
+        function displayResponse(data) {
+            let resultDiv = document.getElementById('responseText');
+
+            if (!resultDiv) {
+                console.error("No element with ID 'result' found.");
+                return;
+            }
+
+            // Formatting the output nicely
+            resultDiv.innerHTML = `
+            <h3>Quality Check Results</h3>
+            <p><strong>Item:</strong> ${data.Item}</p>
+            <p><strong>Percentage of Bad Items:</strong> ${data.Percentage}</p>
+            <p><strong>Judgement:</strong> ${data.Judgement}</p>
+            <p><strong>Insights:</strong> ${data.Insights}</p>
+            <p><strong>Shelf Life:</strong> ${data["Shelf Life"]}</p>
+            `;
         }
     </script>
 </body>

@@ -3,6 +3,8 @@ import requests
 import base64
 import re
 
+from flask import jsonify
+
 
 # import pandas as pd
 
@@ -70,7 +72,7 @@ def call_llm(base64_image):
     }
     response = requests.post(url, headers=headers, json=data)
     response_content = extract_response(response)
-    print(response_content)
+    # print(response_content)
     d = parse_text_to_dict(response_content)
 
     return d

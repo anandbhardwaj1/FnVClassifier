@@ -41,8 +41,9 @@ def analyze_image():
     response = call_llm(img_base64)
 
     # result_text = response["choices"][0]["message"]["content"]
-
-    return jsonify({"analysis": response})
+    print(response)
+    return response
+    # return jsonify({"analysis": response})
 
 
 if __name__ == '__main__':
