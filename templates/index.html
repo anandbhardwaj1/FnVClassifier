@@ -3,115 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Food Vision - Swiggy</title>
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>FnV Quality Check</title>
 
     <style>
         body {
-            background-color: #f8f4eb; /* Light warm background */
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
         }
+
         .container {
-            max-width: 500px;
-            margin-top: 50px;
+            max-width: 400px;
+            margin: 0 auto;
             background: white;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .image-container {
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
+            margin-bottom: 20px;
         }
-        .swiggy-logo {
-            width: 120px;
-            margin-bottom: 10px;
+
+        .image-container img {
+            max-width: 200px;
+            margin-bottom: 15px;
         }
-        h2 {
-            color: #fc8019; /* Swiggy Orange */
-            font-weight: bold;
+
+        .image-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #333;
         }
-        .btn-primary {
-            background-color: #fc8019;
-            border: none;
+
+        .image-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
         }
-        .btn-primary:hover {
-            background-color: #e56f10;
-        }
-        .preview-container {
-            margin-top: 15px;
-        }
+
         #imagePreview {
             max-width: 100%;
-            max-height: 300px;
+            border-radius: 8px;
             display: none;
-            border-radius: 10px;
-            margin-top: 10px;
-            border: 2px solid #fc8019;
+            margin-bottom: 15px;
         }
+
+        .button {
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #f4511e;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .button-secondary {
+            background-color: #fff;
+            color: #ff5722;
+            border: 1px solid #ff5722;
+        }
+
         #loading {
             display: none;
             text-align: center;
-            font-size: 18px;
-            margin-top: 10px;
+            margin-top: 20px;
+        }
+
+        #responseText {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            display: none;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/1/13/Swiggy_logo.png" alt="Swiggy Logo" class="swiggy-logo">
-        <h2>Food Vision</h2>
+        <h1>FnV Quality Check</h1>
 
-        <input type="file" id="imageInput" accept="image/*" class="form-control mb-3">
-
-        <div class="preview-container">
-            <img id="imagePreview" alt="Image Preview">
+        <div class="image-container">
+            <img src="https://your-placeholder-image-url.com/camera-icon.png" alt="Camera Icon" id="defaultIcon">
+            <div class="image-title">Click Crate Image</div>
+            <div class="image-subtitle">Click an image of the filled crate from the top</div>
+            <img id="imagePreview" alt="Preview">
         </div>
 
-        <button class="btn btn-primary mt-3" onclick="uploadImage()">Analyze Food</button>
+        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+        <button class="button" onclick="document.getElementById('imageInput').click()">Click Image</button>
+
+        <div class="button-group" id="actionButtons" style="display: none;">
+            <button class="button button-secondary" onclick="retakePhoto()">Retake</button>
+            <button class="button" onclick="uploadImage()">Proceed</button>
+        </div>
 
         <div id="loading">
-            <div class="spinner-border text-warning" role="status"></div>
-            <p>Analyzing food...</p>
+            <div>Analyzing image...</div>
         </div>
 
-        <h4 class="mt-4">Analysis Result:</h4>
-        <p id="responseText" class="alert alert-light"></p>
+        <div id="responseText"></div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
-        document.getElementById("imageInput").addEventListener("change", function(event) {
-            let file = event.target.files[0];
-            let reader = new FileReader();
-
-            reader.onload = function(e) {
-                let imagePreview = document.getElementById("imagePreview");
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = "block";
-            };
-
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
             if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imagePreview = document.getElementById('imagePreview');
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    document.getElementById('defaultIcon').style.display = 'none';
+                    document.getElementById('actionButtons').style.display = 'flex';
+                }
                 reader.readAsDataURL(file);
             }
         });
 
+        function retakePhoto() {
+            document.getElementById('imageInput').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('defaultIcon').style.display = 'block';
+            document.getElementById('actionButtons').style.display = 'none';
+            document.getElementById('responseText').style.display = 'none';
+        }
+
         function uploadImage() {
-            let input = document.getElementById("imageInput");
-            let file = input.files[0];
+            const file = document.getElementById('imageInput').files[0];
+            if (!file) return;
 
-            if (!file) {
-                alert("Please select an image.");
-                return;
-            }
+            const formData = new FormData();
+            formData.append('image', file);
 
-            let formData = new FormData();
-            formData.append("image", file);
-
-            document.getElementById("loading").style.display = "block";
-            document.getElementById("responseText").innerText = "";
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('responseText').style.display = 'none';
 
             fetch('/analyze', {
                 method: 'POST',
@@ -119,16 +169,17 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById("loading").style.display = "none";
-                document.getElementById("responseText").innerText = data.analysis;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('responseText').style.display = 'block';
+                document.getElementById('responseText').innerText = data.analysis;
             })
             .catch(error => {
-                document.getElementById("loading").style.display = "none";
-                document.getElementById("responseText").innerText = "Error analyzing image.";
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('responseText').style.display = 'block';
+                document.getElementById('responseText').innerText = 'Error analyzing image.';
                 console.error('Error:', error);
             });
         }
     </script>
-
 </body>
 </html>
