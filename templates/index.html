@@ -173,6 +173,12 @@
                 //displayResponse(data);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('responseText').style.display = 'block';
+                console.log("Received Data:", data);  // Debugging Step
+
+                // Ensure Shelf Life is accessed correctly
+                let shelfLife = data["Shelf Life"] || "N/A";
+                console.log("Extracted Shelf Life:", shelfLife);  // Check if correctly retrieved
+
                 handleResponse(data)
                 // window.location.href = "/page1";
                 // displayResponse(data);
@@ -187,7 +193,8 @@
 
         function handleResponse(data){
             let percentage = parseInt(data.Percentage.replace('%', ''));
-            if (percentage < 0) {
+            sessionStorage.setItem("analysisData", JSON.stringify(data));
+            if (percentage < 20) {
                 window.location.href = "/page1";  // Redirect to QC Failed page
             } else {
                 window.location.href = "/page2";  // Redirect to QC Passed page

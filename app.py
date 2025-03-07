@@ -7,7 +7,7 @@ import os
 
 from openapi import call_llm
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 # OpenAI API Key (Replace with your key)
 openai.api_key = "YOUR_OPENAI_API_KEY"

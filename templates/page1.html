@@ -4,7 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quality Check Result</title>
-    <link rel="stylesheet" href="styles1.css"> <!-- Link to external CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}"> <!-- Link to external CSS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let data = JSON.parse(sessionStorage.getItem("analysisData"));
+            console.log("Retrieved Data in page1:", data);
+            if (data) {
+                document.getElementById("item").innerText = data.Item;
+                document.getElementById("percentage").innerText = data.Percentage;
+                document.getElementById("judgement").innerText = data.Judgement;
+                document.getElementById("insights").innerText = data.Insights;
+                document.getElementById("shelfLife").innerText = data['Shelf Life'][0];
+            }
+        });
+        function redirectToHome() {
+            window.location.href = "/";  // Redirects to the homepage
+        }
+    </script>
 </head>
 <body>
 
@@ -19,9 +35,9 @@
         <div class="insights">
             <h4>Insights</h4>
             <div class="info">
-                <p><strong>Item Detected</strong> <span>Banana</span></p>
-                <p><strong>Bad Quality</strong> <span>9%</span></p>
-                <p><strong>Shelf Life</strong> <span>5-7 Days</span></p>
+                <p><strong>Item Detected</strong> <span id="item"> Loading... </span></p>
+                <p><strong>Bad Quality</strong> <span id="percentage"> Loading... </span></p>
+                <p><strong>Shelf Life</strong> <span id="shelfLife"> Loading... </span></p>
             </div>
         </div>
 
@@ -30,8 +46,8 @@
         </div>
 
         <div class="buttons">
-            <button class="cancel">Cancel</button>
-            <button class="proceed">Proceed</button>
+<!--            <button class="cancel">Cancel</button>-->
+            <button class="proceed" onclick="redirectToHome()">Home</button>
         </div>
     </div>
 
