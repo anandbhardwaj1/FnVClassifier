@@ -173,7 +173,9 @@
                 //displayResponse(data);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('responseText').style.display = 'block';
-                displayResponse(data);
+                handleResponse(data)
+                // window.location.href = "/page1";
+                // displayResponse(data);
             })
             .catch(error => {
                 document.getElementById('loading').style.display = 'none';
@@ -181,6 +183,15 @@
                 document.getElementById('responseText').innerText = 'Error analyzing image.';
                 console.error('Error:', error);
             });
+        }
+
+        function handleResponse(data){
+            let percentage = parseInt(data.Percentage.replace('%', ''));
+            if (percentage < 0) {
+                window.location.href = "/page1";  // Redirect to QC Failed page
+            } else {
+                window.location.href = "/page2";  // Redirect to QC Passed page
+            }
         }
 
         function displayResponse(data) {

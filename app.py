@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import openai
 from PIL import Image
 import base64
@@ -42,9 +42,23 @@ def analyze_image():
 
     # result_text = response["choices"][0]["message"]["content"]
     print(response)
-    return response
-    # return jsonify({"analysis": response})
 
+    # percentage = response['Percentage']  # Example: "15%"
+    # percentage_int = int(percentage.replace('%', ''))
+    # if percentage_int > 20:
+    #     return jsonify({"redirect_url": url_for('page1')})  # Redirect to Page 1
+    # else:
+    #     return jsonify({"redirect_url": url_for('page2')})  # Redirect to Page 2
+    return response
+
+
+@app.route('/page1')
+def page1():
+    return render_template('page1.html')
+
+@app.route('/page2')
+def page2():
+    return render_template('page2.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

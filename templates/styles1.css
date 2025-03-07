@@ -1,0 +1,109 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container */
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+/* Title */
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+
+/* Status Section */
+.status {
+    margin: 20px 0;
+}
+
+.check-icon {
+    width: 80px;
+    height: 80px;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 40px;
+    margin: 0 auto;
+}
+
+.status-text {
+    color: #4CAF50;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Insights Section */
+.insights {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.insights h4 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.info p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    border-bottom: 1px solid #ddd;
+    padding: 5px 0;
+}
+
+/* Information Box */
+.info-box {
+    background-color: #FFE8C2;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: left;
+    font-size: 14px;
+    color: #9A6B3E;
+    border: 1px solid #E8C49A;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 45%;
+}
+
+.cancel {
+    background-color: #FFD6C1;
+    color: #D9534F;
+}
+
+.proceed {
+    background-color: #FF5722;
+    color: white;
+}
