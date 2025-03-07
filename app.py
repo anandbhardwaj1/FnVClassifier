@@ -17,7 +17,6 @@ openai.api_key = "YOUR_OPENAI_API_KEY"
 def index():
     return render_template('index.html')
 
-
 @app.route('/analyze', methods=['POST'])
 def analyze_image():
     file = request.files.get("image")
@@ -39,11 +38,16 @@ def analyze_image():
     #     max_tokens=100
     # )
     response = call_llm(img_base64)
-
     # result_text = response["choices"][0]["message"]["content"]
+    print(response)
 
-    return jsonify({"analysis": response})
-
+    # percentage = response['Percentage']  # Example: "15%"
+    # percentage_int = int(percentage.replace('%', ''))
+    # if percentage_int > 20:
+    #     return jsonify({"redirect_url": url_for('page1')})  # Redirect to Page 1
+    # else:
+    #     return jsonify({"redirect_url": url_for('page2')})  # Redirect to Page 2
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
