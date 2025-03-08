@@ -35,7 +35,6 @@ function proceed() {
             .then(data => {
                 let percentage = parseInt(data.Percentage.replace('%', ''));
                 let isPassed = percentage <= 20;
-                 debugger
                 // Create result UI based on QC pass/fail
                 document.getElementById('analysis-ui').innerHTML = `
                     <div class="analysis-container">
