@@ -1,39 +1,35 @@
-from flask import Flask, request, jsonify, render_template
-import requests
-from openai import OpenAI
+from flask import Flask, render_template, request, jsonify
+import openai
+from PIL import Image
+import base64
+import openapi
 import os
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+from openapi import call_llm
 
 app = Flask(__name__)
 
-# Initialize OpenAI client
-# client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
-# Route for the home page
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/analyze-image', methods=['POST'])
+@app.route('/analyze', methods=['POST'])
 def analyze_image():
-    try:
-        data = request.get_json()
-        image_url = data.get('image_url')
-        print(image_url)
-        if not image_url:
-            return jsonify({'error': 'No image URL provided'}), 400
+    file = request.files.get("image")
 
-        # Just return Hello World instead of analyzing the image
-        return jsonify({
-            'success': True,
-            'analysis': 'Hello World'
-        })
+    if not file:
+        return jsonify({"error": "No image uploaded"}), 400
 
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    # Convert image to Base64 for GPT processing
+    img = Image.open(file)
+    img.save("temp_image.jpg")
+
+    with open("temp_image.jpg", "rb") as img_file:
+        img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+
+    response = call_llm(img_base64)
+    return response
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+   app.run(host='0.0.0.0', port=4000, debug=True)
