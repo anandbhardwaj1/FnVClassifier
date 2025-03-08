@@ -32,22 +32,13 @@ function proceed() {
                 body: formData
             })
             .then(response => response.json())
-            // .then(data => {
-            //     document.getElementById('analysis-ui').innerHTML = `
-            //         <div class="analysis-container">
-            //             <div class="title">Analysis Result</div>
-            //             <pre style="text-align: left; white-space: pre-wrap;">${data.analysis}</pre>
-            //         </div>
-            //     `;
-            // })
             .then(data => {
                 let percentage = parseInt(data.Percentage.replace('%', ''));
-                let isPassed = percentage < 20;
+                let isPassed = percentage <= 20;
                  debugger
                 // Create result UI based on QC pass/fail
                 document.getElementById('analysis-ui').innerHTML = `
                     <div class="analysis-container">
-                        <div class="title">Results</div>
                         
                         <div class="result-icon ${isPassed ? 'pass' : 'fail'}">
                             ${isPassed ? 
@@ -59,11 +50,11 @@ function proceed() {
                         </div>
                         
                         <div class="result-title">
-                            ${isPassed ? 'Yay! QC Passed' : 'Oops! QC Failed'}
+                            ${isPassed ? 'Yay! QC Passed' : 'Uh-Oh! QC Failed'}
                         </div>
                         
                         <div class="insights-section">
-                            <div class="insights-title">Insights</div>
+                            <div class="insights-title f-w-700">Insights</div>
                             
                             <div class="insight-row">
                                 <div>Item Detected</div>
@@ -81,16 +72,16 @@ function proceed() {
                             </div>
                         </div>
                         
-                        ${data.Insights ? `
-                            <div class="instructions-box">
-                                ${data.Insights
+                        ${data.Judgement ? `
+                            <div class="instructions-box" style="margin-left: 0px; margin-right: 0px;">
+                                ${data.Judgement
                                 .map(instruction => 
                                     `<div class="instruction-item">• ${instruction}</div>`
                                 ).join('')}
                             </div>
                         ` : ''}
                         
-                        <div class="action-buttons">
+                        <div class="action-buttons" style="width: 100%">
                             <button class="button button-secondary" onclick="window.location.reload()">Cancel</button>
                             <button class="button" onclick="window.location.reload()">Proceed</button>
                         </div>
